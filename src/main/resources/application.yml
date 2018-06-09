@@ -1,0 +1,3 @@
+spring:
+  mail:
+    jndi-name: java:jboss/mail/mail-lockton

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties
 public class AdminProperties {
     private String mailFrom;
+    private String directorySiesLog;
 
     public String getMailFrom() {
         return mailFrom;
@@ -22,5 +23,13 @@ public class AdminProperties {
 
     public void setMailFrom(String mailFrom) {
         this.mailFrom = mailFrom;
+    }
+
+    public String getDirectorySiesLog() {
+        return directorySiesLog;
+    }
+
+    public void setDirectorySiesLog(String directorySiesLog) {
+        this.directorySiesLog = directorySiesLog;
     }
 }

@@ -1,5 +1,7 @@
 package com.system.mail.service;
 
+import com.system.mail.entity.Mail;
+
 /**
  * Created by IntelliJ IDEA.
  * Author: Marcos Santiago Leonardo
@@ -8,4 +10,6 @@ package com.system.mail.service;
  */
 public interface MailService {
     void sendMailSimple(String email) throws Exception;
+
+    void sendMailWithFile(Mail mail) throws Exception;
 }

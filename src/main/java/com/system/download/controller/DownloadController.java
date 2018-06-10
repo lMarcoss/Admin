@@ -41,22 +41,10 @@ public class DownloadController {
         return resourceLog(path + file1.getNameFile(), response);
     }
 
-    @GetMapping("/logCompile")
-    public InputStreamResource logCompile(HttpServletResponse response) throws IOException {
-        return resourceLog(adminProperties.getFileLogCompileSies(), response);
-    }
-
-    private InputStreamResource resourceLog(String nameFile, HttpServletResponse response) throws FileNotFoundException {
-        java.io.File file = new java.io.File(nameFile);
-        response.setContentType("application/txt");
-        response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
-        return new InputStreamResource(new FileInputStream(nameFile));
-    }
-
-    @PostMapping("/logSies1")
-    public ResponseEntity<InputStreamResource> downloadFile11(@RequestBody File file1) throws IOException {
+    @GetMapping("/logSies/{fileName}")
+    public ResponseEntity<InputStreamResource> downloadFile11(@PathVariable String fileName) throws IOException {
         String path = adminProperties.getDirectorySiesLog();
-        String pathAbsoluteFile = path + file1.getNameFile();
+        String pathAbsoluteFile = path + fileName;
         java.io.File file = new java.io.File(pathAbsoluteFile);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
@@ -67,50 +55,13 @@ public class DownloadController {
                 .body(resource);
     }
 
-    @GetMapping("/warSies")
-    public void doDownload(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String fullPath = adminProperties.getFileWarSies();
-        java.io.File file = new java.io.File(fullPath);
-        java.io.File downloadFile = new java.io.File(file.getName());
-        FileInputStream inputStream = new FileInputStream(file);
-
-        // get MIME type of the file
-        // get absolute path of the application
-        ServletContext context = request.getServletContext();
-        String mimeType = context.getMimeType(fullPath);
-        if (mimeType == null) {
-            // set to binary type if MIME mapping not found
-            mimeType = "application/octet-stream";
-        }
-        System.out.println("MIME type: " + mimeType);
-
-        // set content attributes for the response
-        response.setContentType(mimeType);
-        response.setContentLength((int) downloadFile.length());
-
-        // set headers for the response
-        String headerKey = "Content-Disposition";
-        String headerValue = String.format("attachment; filename=%s", file);
-        response.setHeader(headerKey, headerValue);
-        int BUFFER_SIZE = 160000;
-        // get output stream of the response
-        OutputStream outStream = response.getOutputStream();
-
-        byte[] buffer = new byte[BUFFER_SIZE];
-        int bytesRead = -1;
-
-        // write bytes read from the input stream into the output stream
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outStream.write(buffer, 0, bytesRead);
-        }
-
-        inputStream.close();
-        outStream.close();
-
+    @GetMapping("/logCompile")
+    public InputStreamResource logCompile(HttpServletResponse response) throws IOException {
+        return resourceLog(adminProperties.getFileLogCompileSies(), response);
     }
 
-    @GetMapping("/warSies1")
-    public void doDownload1(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @GetMapping("/warSies")
+    public void warSies(HttpServletRequest request, HttpServletResponse response) throws IOException {
         java.io.File file = new java.io.File(adminProperties.getFileWarSies());
         InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
         String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
@@ -124,4 +75,12 @@ public class DownloadController {
 
         FileCopyUtils.copy(inputStream, response.getOutputStream());
     }
+
+    private InputStreamResource resourceLog(String nameFile, HttpServletResponse response) throws FileNotFoundException {
+        java.io.File file = new java.io.File(nameFile);
+        response.setContentType("application/txt");
+        response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
+        return new InputStreamResource(new FileInputStream(nameFile));
+    }
+
 }

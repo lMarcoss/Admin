@@ -1,5 +1,6 @@
 package com.system.mail.controller;
 
+import com.system.configuration.AdminProperties;
 import com.system.mail.entity.Mail;
 import com.system.mail.service.MailService;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -20,6 +21,9 @@ public class MailController {
     private static String MESSAGE_SENT = "Message sent";
 
     @Autowired
+    private AdminProperties adminProperties;
+
+    @Autowired
     private MailService mailService;
 
     @PostMapping("/sendMail")
@@ -37,8 +41,9 @@ public class MailController {
     @PostMapping("/sendMailWithFile")
     public String sendMailWithFile(@RequestBody Mail mail) {
         try {
-            LOG.info(mail.toString());
-            mailService.sendMailWithFile(mail);
+            String path = adminProperties.getDirectorySiesLog();
+            String nameFile = path + mail.getNameFile();
+            mailService.sendMailWithFile(new Mail(mail.getMailTo(), nameFile));
             return MESSAGE_SENT;
         } catch (Exception e) {
             LOG.error(ExceptionUtils.getStackTrace(e));

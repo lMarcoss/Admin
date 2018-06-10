@@ -11,5 +11,5 @@ import java.util.List;
  * Time: 17:12
  */
 public interface DirectoryService {
-    List<File> listFilesDirectory(String pathDirectory) throws Exception;
+    List<File> listFilesDirectory(String pathDirectory, String patternFile) throws Exception;
 }

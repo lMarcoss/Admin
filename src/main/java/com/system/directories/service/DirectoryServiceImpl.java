@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,37 +23,26 @@ import java.util.List;
 @Service
 public class DirectoryServiceImpl implements DirectoryService {
     private static Logger LOG = Logger.getLogger(DirectoryServiceImpl.class);
-    private static String EXTENSION_FILE = ".log";
 
     @Override
-    public List<File> listFilesDirectory(String pathDirectory) throws Exception {
-        return listFilesForFolder(pathDirectory);
+    public List<File> listFilesDirectory(String pathDirectory, String patternFile) throws Exception {
+        return listFilesForFolder(pathDirectory, patternFile);
     }
 
-    public List<File> listFilesForFolder(String pathDirectory) throws Exception {
+    public List<File> listFilesForFolder(String pathDirectory, String patternFile) throws Exception {
 
         List<File> listFiles = new ArrayList<>();
-
-        //Files.newDirectoryStream(Paths.get(path)).forEach(System.out::println);
-        //Files.list(Paths.get(path)).filter(Files::isRegularFile).forEach(System.out::println);
-
         try {
             for (Path path : Files.newDirectoryStream(Paths.get(pathDirectory),
-                    path -> path.toString().endsWith(EXTENSION_FILE))) {
-                listFiles.add(new File(path.toString()));
+                    path -> path.toString().contains(patternFile))) {
+                java.io.File file = new java.io.File(String.valueOf(path));
+                listFiles.add(new File(file.getName(), file.length()));
             }
+            listFiles.sort(Comparator.comparing(File::getNameFile));
             return listFiles;
         } catch (IOException e) {
             LOG.info(ExceptionUtils.getStackTrace(e));
             throw new Exception(e.getMessage());
         }
     }
-
-    /*
-    *
-    *
-    * List fileNamesList = new ArrayList();
-      Files.newDirectoryStream(Paths.get(dir),
-      path -> path.toString().endsWith(".java")).forEach(filePath -> fileNamesList.add(filePath.toString()));
-    * */
 }

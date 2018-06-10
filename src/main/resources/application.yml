@@ -1,3 +1,5 @@
 spring:
   mail:
     jndi-name: java:jboss/mail/mail-lockton
+  profiles:
+    active: leo

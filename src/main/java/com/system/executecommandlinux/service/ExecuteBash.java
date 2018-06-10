@@ -7,5 +7,5 @@ package com.system.executecommandlinux.service;
  * Time: 00:22
  */
 public interface ExecuteBash {
-    void compileProjectSies();
+    void compileProjectSies(String path, String nameShell);
 }

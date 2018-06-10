@@ -1,7 +1,10 @@
 package com.system.executecommandlinux.service;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -12,15 +15,22 @@ import java.io.IOException;
  */
 @Service
 public class ExecuteBashImpl implements ExecuteBash {
+    private static Logger LOG = Logger.getLogger(ExecuteBashImpl.class);
+
     @Override
-    public void compileProjectSies() {
-        //String command = "/opt/lockton/PROJECT/execute_script.sh";
-        String command = "/Users/lMarcoss/workspace-meltsan/Lockton/execute_script.sh";
-        String base = "/bin/sh ";
+    public void compileProjectSies(String path, String nameShell) {
+        final File executorDirectory = new File(path);
+
+        ProcessBuilder processBuilder = new ProcessBuilder(nameShell);
+        processBuilder.directory(executorDirectory);
+        Process process;
         try {
-            Runtime.getRuntime().exec(base + command);
-        } catch (IOException e) {
-            e.printStackTrace();
+            int shellExitStatus;
+            process = processBuilder.start();
+            shellExitStatus = process.waitFor();
+            LOG.info(shellExitStatus);
+        } catch (IOException | InterruptedException e) {
+            LOG.error(ExceptionUtils.getStackTrace(e));
         }
     }
 }

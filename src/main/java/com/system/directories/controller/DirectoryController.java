@@ -37,7 +37,7 @@ public class DirectoryController {
     public Response listFilesDirectory() {
 
         try {
-            List<File> listFiles = directoryService.listFilesDirectory(adminProperties.getDirectorySiesLog());
+            List<File> listFiles = directoryService.listFilesDirectory(adminProperties.getDirectorySiesLog(), adminProperties.getPatternFileSiesLog());
             return CommonResponse.responseSuccess(listFiles);
         } catch (Exception e) {
             LOG.error(ExceptionUtils.getStackTrace(e));

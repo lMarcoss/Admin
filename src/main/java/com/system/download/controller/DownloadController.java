@@ -31,18 +31,6 @@ import java.io.OutputStream;
 public class DownloadController {
     private static Logger LOG = Logger.getLogger(DownloadController.class);
 
-
-    @PostMapping("/logSies11")
-    @Produces({"application/*"})
-    public Response downloadFile1(@RequestBody File path) {
-        File file = new File(path.getNameFile());
-
-        Response.ResponseBuilder response = Response.ok(file);
-        response.header("Content-Disposition",
-                "attachment; filename=" + file.getNameFile());
-        return response.build();
-    }
-
     @PostMapping("/logSies")
     public InputStreamResource FileSystemResource(@RequestBody File file1, HttpServletResponse response) throws IOException {
         java.io.File file = new java.io.File(file1.getNameFile());

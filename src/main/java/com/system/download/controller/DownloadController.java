@@ -2,6 +2,7 @@ package com.system.download.controller;
 
 import com.system.configuration.AdminProperties;
 import com.system.directories.entity.File;
+import com.system.directories.service.DirectoryService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -35,10 +36,19 @@ public class DownloadController {
     @Autowired
     private AdminProperties adminProperties;
 
+    @Autowired
+    private DirectoryService directoryService;
+
     @PostMapping("/logSies")
     public InputStreamResource FileSystemResource(@RequestBody File file1, HttpServletResponse response) throws IOException {
         String path = adminProperties.getDirectorySiesLog();
         return resourceLog(path + file1.getNameFile(), response);
+    }
+
+    @PostMapping("/logSies/{order}")
+    public InputStreamResource downloadLastLogSiesByOrder(@PathVariable int order, HttpServletResponse response) throws Exception {
+        String path = adminProperties.getDirectorySiesLog();
+        return resourceLastLogByOrder(path, order, response);
     }
 
     @GetMapping("/logSies/{fileName}")
@@ -81,6 +91,11 @@ public class DownloadController {
         response.setContentType("application/txt");
         response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
         return new InputStreamResource(new FileInputStream(nameFile));
+    }
+
+    private InputStreamResource resourceLastLogByOrder(String path, int order, HttpServletResponse response) throws Exception {
+        String nameFile = directoryService.getNameLastLogByOrder(adminProperties.getDirectorySiesLog(), adminProperties.getPatternFileSiesLog(), order);
+        return resourceLog(path + nameFile, response);
     }
 
 }

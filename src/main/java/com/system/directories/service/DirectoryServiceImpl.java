@@ -29,6 +29,13 @@ public class DirectoryServiceImpl implements DirectoryService {
         return listFilesForFolder(pathDirectory, patternFile);
     }
 
+    @Override
+    public String getNameLastLogByOrder(String pathDirectory, String patternFile, int order) throws Exception {
+        List<File> logFiles = listFilesForFolder(pathDirectory, patternFile);
+        File file = logFiles.get(logFiles.size() - (1 + order));
+        return file.getNameFile();
+    }
+
     public List<File> listFilesForFolder(String pathDirectory, String patternFile) throws Exception {
 
         List<File> listFiles = new ArrayList<>();

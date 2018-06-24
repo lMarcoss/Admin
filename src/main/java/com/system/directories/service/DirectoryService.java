@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface DirectoryService {
     List<File> listFilesDirectory(String pathDirectory, String patternFile) throws Exception;
+
+    String getNameLastLogByOrder(String pathDirectory, String patternFile, int order) throws Exception;
 }

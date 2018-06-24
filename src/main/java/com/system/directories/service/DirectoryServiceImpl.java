@@ -32,7 +32,7 @@ public class DirectoryServiceImpl implements DirectoryService {
     @Override
     public String getNameLastLogByOrder(String pathDirectory, String patternFile, int order) throws Exception {
         List<File> logFiles = listFilesForFolder(pathDirectory, patternFile);
-        File file = logFiles.get(logFiles.size() - (1 + order));
+        File file = logFiles.get(order);
         return file.getNameFile();
     }
 

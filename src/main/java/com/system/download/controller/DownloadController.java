@@ -16,6 +16,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import java.io.*;
@@ -45,10 +46,23 @@ public class DownloadController {
         return resourceLog(path + file1.getNameFile(), response);
     }
 
-    @PostMapping("/logSies/{order}")
-    public InputStreamResource downloadLastLogSiesByOrder(@PathVariable int order, HttpServletResponse response) throws Exception {
+    @GetMapping("/lastLogSies")
+    public InputStreamResource downloadLastLogSiesByOrder(@RequestParam(value = "order", required = false) String order, HttpServletResponse response) throws Exception {
         String path = adminProperties.getDirectorySiesLog();
-        return resourceLastLogByOrder(path, order, response);
+        int orderLast;
+        if (order == null || order.equals("")) {
+            orderLast = 0;
+        } else {
+            try {
+                orderLast = Integer.valueOf(order);
+                if (orderLast <= 0) {
+                    orderLast = 0;
+                }
+            } catch (Exception e) {
+                orderLast = 0;
+            }
+        }
+        return resourceLastLogByOrder(path, orderLast, response);
     }
 
     @GetMapping("/logSies/{fileName}")

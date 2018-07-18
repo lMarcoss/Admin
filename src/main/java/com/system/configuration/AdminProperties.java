@@ -4,6 +4,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+
 /**
  * Created by IntelliJ IDEA.
  * Author: Marcos Santiago Leonardo
@@ -22,6 +24,7 @@ public class AdminProperties {
     private String pathShell;
     private String nameShellMeltsan;
     private String nameShellLockton;
+    private String directoryFileZip;
 
     public String getMailFrom() {
         return mailFrom;
@@ -87,11 +90,20 @@ public class AdminProperties {
         this.nameShellLockton = nameShellLockton;
     }
 
+    public String getDirectoryFileZip() {
+        return validatePath(directoryFileZip);
+    }
+
+    public void setDirectoryFileZip(String directoryFileZip) {
+        this.directoryFileZip = directoryFileZip;
+    }
+
     private String validatePath(String path) {
-        if (path.trim().substring(path.length() - 1).equals("/")) {
+        String separator = File.separator;
+        if (path.trim().endsWith(separator)) {
             return path.trim();
         } else {
-            return path.trim() + "/";
+            return path.trim() + separator;
         }
     }
 }

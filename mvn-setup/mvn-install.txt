@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=zip4j.jar -DgroupId=zip4j -DartifactId=zip4j -Dversion=1 -Dpackaging=jar

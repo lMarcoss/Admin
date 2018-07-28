@@ -68,6 +68,12 @@
             <artifactId>jersey-server</artifactId>
             <version>1.19.4</version>
         </dependency>
+        <!-- Unzip file with password-->
+        <dependency>
+            <groupId>zip4j</groupId>
+            <artifactId>zip4j</artifactId>
+            <version>1</version>
+        </dependency>
     </dependencies>
 
     <build>
